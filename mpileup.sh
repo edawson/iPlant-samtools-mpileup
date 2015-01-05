@@ -67,6 +67,11 @@ rm -rf paramlist.aln
 # bcftools view -cvgb - > ${temp}${region}.raw2.bcf 2> ${temp}${region}.raw2.bcf.log
 # ${BCFTOOLS}bcftools view ${temp}${region}.raw2.bcf | ${vcfutils} varFilter -D800 - > ${results}${region}.realigned.flt.vcf
 
+for i in ./input/reheader*
+do
+  echo "" >> paramlist.aln
+done
+
 echo "Launcher...."
 date
 export TACC_LAUNCHER_SCHED=dynamic
@@ -76,14 +81,8 @@ date
 echo "..Done"
 
 
-## Merge BAM files back together
-echo "Merging sorted BAMs"
-OWD=$PWD
-cd temp
+## Merge vcf files back together
+echo "Merging VCFs"
 
-BAMS=`ls *.sorted.bam`
-# Merge and sort
-samtools merge ${OWD}/${OUTPUT}.bam ${BAMS} && samtools index ${OWD}/${OUTPUT}.bam
-cd $OWD
 
 date
